@@ -5,63 +5,63 @@ library(tabulizer)
 library(lubridate)
 # CONFIG ---------------------------------
 
-    # Càlcul del número d'informe
-    n_informe = 55 + floor(as.numeric(
-        ymd_hms(paste0(today("GMT")," 16:00:00"),tz="GMT")
-        - ymd_hms("2020-03-25 16:00:00", tz="GMT")))
+# Càlcul del número d'informe
+n_informe = 55 + floor(as.numeric(
+  ymd_hms(paste0(today("GMT")," 16:00:00"),tz="GMT")
+  - ymd_hms("2020-03-25 16:00:00", tz="GMT")))
 
 
-    # Url del número d'informe
-    url <- paste0("https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_",n_informe,"_COVID-19.pdf")
+# Url del número d'informe
+url <- paste0("https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_",n_informe,"_COVID-19.pdf")
 
-    # Conversió de PDF a taules
-    taules <- extract_tables(url, guess= TRUE, output = "data.frame", method = "stream")
+# Conversió de PDF a taules
+taules <- extract_tables(url, guess= TRUE, output = "data.frame", method = "stream")
 
 # COMUNITATS AUTÒNOMES -------------------
-    ccaa_cols <- c("ccaa","total", "incidencia_acum14d","hospital","uci", "morts","recuperats","nous")
-    ccaa <- taules[[1]][-c(1:4), ] %>% data.frame(row.names = NULL) 
-    colnames(ccaa) <- ccaa_cols
+ccaa_cols <- c("ccaa","total", "incidencia_acum14d","hospital","uci", "morts","recuperats","nous")
+ccaa <- taules[[1]][-c(1:4), ] %>% data.frame(row.names = NULL) 
+colnames(ccaa) <- ccaa_cols
 
 # EDAT TOTAL -----------------------------
-    # A partir del pdf 57 les taules d'edats passen de `taules[[2]]` a `taules[[3]]`
-    edat_cols <- c("edat","confirmats","hospitalitzats","uci", "morts")
-    edat_total <- taules[[3]][3:12,c(1:4,8)] %>% 
-      separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
-      data.frame(row.names = NULL)
-    colnames(edat_total) <- edat_cols
-
-# EDAT HOMES -----------------------------
-    edat_homes <- taules[[3]][19:28,c(1:4,8)] %>% 
-      separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
-      data.frame(row.names = NULL)
-    colnames(edat_homes) <- edat_cols
+# A partir del pdf 57 les taules d'edats passen de `taules[[2]]` a `taules[[3]]`
+edat_cols <- c("edat","confirmats","hospitalitzats","uci", "morts")
+edat_total <- taules[[3]][7:16,c(1:4,8)] %>% 
+  separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+  data.frame(row.names = NULL)
+colnames(edat_total) <- edat_cols
 
 # EDAT DONES -----------------------------
-    edat_dones <- taules[[3]][35:44,c(1:4,8)] %>% 
-      separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
-      data.frame(row.names = NULL)
-    colnames(edat_dones) <- edat_cols
+edat_dones <- taules[[3]][40:49,c(1:4,8)] %>% 
+  separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+  data.frame(row.names = NULL)
+colnames(edat_homes) <- edat_cols
+
+# EDAT HOMES -----------------------------
+edat_homes <- taules[[3]][24:33,c(1:4,8)] %>% 
+  separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+  data.frame(row.names = NULL)
+colnames(edat_dones) <- edat_cols
 
 # AJUSTOS: DECIMALS, SEP.MILERS ----
-    sets <- list("ccaa" = ccaa,"edat_total"= edat_total,"edat_homes"= edat_homes,"edat_dones"= edat_dones)
-    
-    # eliminar els '.' a tots els data.frames
-    for (i in names(sets)){
-      sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) %>%
-        as.data.frame(row.names = 1)
-    }
-    
-    # substituir ',' per '.' a `ccaa`
-    sets[[1]][,3] <- sapply(sets[[1]][,3], function(x) gsub(",",".",x)) %>% as.numeric()
-  
-    
-      
-    
+sets <- list("ccaa" = ccaa,"edat_total"= edat_total,"edat_homes"= edat_homes,"edat_dones"= edat_dones)
+
+# eliminar els '.' a tots els data.frames
+for (i in names(sets)){
+  sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) %>%
+    as.data.frame(row.names = 1)
+}
+
+# substituir ',' per '.' a `ccaa`
+sets[[1]][,3] <- sapply(sets[[1]][,3], function(x) gsub(",",".",x)) %>% as.numeric()
+
+
+
+
 # EXPORTAR CSVs --------------------------
-    for(i in names(sets)) {
-      write_delim(
-        sets[[i]], 
-        paste0("./exports/",n_informe,"_",i,".csv"),
-        delim = ",")
-      }
+for(i in names(sets)) {
+  write_delim(
+    sets[[i]], 
+    paste0("./exports/",n_informe,"_",i,".csv"),
+    delim = ",")
+}
 
