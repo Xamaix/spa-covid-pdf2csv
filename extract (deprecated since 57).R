@@ -6,9 +6,7 @@ library(lubridate)
 # CONFIG ---------------------------------
 
 # Càlcul del número d'informe
-n_informe = 55 + floor(as.numeric(
-  ymd_hms(paste0(today("GMT")," 16:00:00"),tz="GMT")
-  - ymd_hms("2020-03-25 16:00:00", tz="GMT")))
+n_informe = 56
 
 
 # Url del número d'informe
@@ -33,13 +31,13 @@ colnames(edat_total) <- edat_cols
 edat_dones <- taules[[2]][19:28,c(1:4,8)] %>% 
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
   data.frame(row.names = NULL)
-colnames(edat_homes) <- edat_cols
+colnames(edat_dones) <- edat_cols
 
 # EDAT HOMES -----------------------------
 edat_homes <- taules[[2]][35:44,c(1:4,8)] %>% 
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
   data.frame(row.names = NULL)
-colnames(edat_dones) <- edat_cols
+colnames(edat_homes) <- edat_cols
 
 # AJUSTOS: DECIMALS, SEP.MILERS ----
 sets <- list("ccaa" = ccaa,"edat_total"= edat_total,"edat_homes"= edat_homes,"edat_dones"= edat_dones)
