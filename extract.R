@@ -1,15 +1,14 @@
-#install.packages("formattable")
+#install.packages("tabulizer")
 Sys.setenv(JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_241.jdk/Contents/Home")
 library(tidyverse)
 library(tabulizer)
 library(lubridate)
-library(formattable)
 # CONFIG ---------------------------------
 
     # Càlcul del número d'informe
     n_informe = 55 + floor(as.numeric(
-        ymd_hms(paste0(today("GMT")," 17:00:00"))
-        - ymd_hms("2020-03-26 16:00:00")))
+        ymd_hms(paste0(today("GMT")," 16:00:00"),tz="GMT")
+        - ymd_hms("2020-03-25 16:00:00", tz="GMT")))
 
 
     # Url del número d'informe
@@ -25,19 +24,19 @@ library(formattable)
 
 # EDAT TOTAL -----------------------------
     edat_cols <- c("edat","confirmats","hospitalitzats","uci", "morts")
-    edat_total <- taules[[2]][3:12,c(1:4,8)] %>% 
+    edat_total <- taules[[3]][3:12,c(1:4,8)] %>% 
       separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_total) <- edat_cols
 
 # EDAT HOMES -----------------------------
-    edat_homes <- taules[[2]][19:28,c(1:4,8)] %>% 
+    edat_homes <- taules[[3]][19:28,c(1:4,8)] %>% 
       separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_homes) <- edat_cols
 
 # EDAT DONES -----------------------------
-    edat_dones <- taules[[2]][35:44,c(1:4,8)] %>% 
+    edat_dones <- taules[[3]][35:44,c(1:4,8)] %>% 
       separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_dones) <- edat_cols
@@ -61,7 +60,7 @@ library(formattable)
     for(i in names(sets)) {
       write_delim(
         sets[[i]], 
-        paste0("./exports/",i,"_",n_informe,".csv"),
+        paste0("./exports/",n_informe,"_",i,".csv"),
         delim = ",")
       }
 

@@ -1,0 +1,11 @@
+edat,confirmats,hospitalitzats,uci,morts
+Grupo de,,,,
+,,,Mujeres,
+edad,,,,
+(años),Confirmados,Hospitalizados,,
+,n,n,,n
+0-9,82,19,,0
+10-19,170,20,,1
+20-29,1186,132,,0
+30-39,2037,293,,4
+40-49,2798,533,,10
