@@ -47,13 +47,13 @@ library(formattable)
     
     # eliminar els '.' a tots els data.frames
     for (i in names(sets)){
-      sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) # Eliminem '.' arreu menys 1a col.
+      sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) %>%
+        as.data.frame(row.names = 1)
     }
     
     # substituir ',' per '.' a `ccaa`
-    sets[[1]][,2] <- sapply(sets[[1]][,2], function(x) as.numeric(gsub(",",".",x)))
-    
-   # sapply(sets,function(x) data.frame(x, row.names =1))
+    sets[[1]][,3] <- sapply(sets[[1]][,3], function(x) gsub(",",".",x)) %>% as.numeric()
+  
     
       
     
