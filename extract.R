@@ -1,9 +1,9 @@
-#install.packages("tabulizer")
+#install.packages("formattable")
 Sys.setenv(JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_241.jdk/Contents/Home")
 library(tidyverse)
 library(tabulizer)
 library(lubridate)
-
+library(formattable)
 # CONFIG ---------------------------------
 
     # Càlcul del número d'informe
@@ -42,10 +42,22 @@ library(lubridate)
       data.frame(row.names = NULL)
     colnames(edat_dones) <- edat_cols
 
-    
-# EXPORTAR CSVs
-    # CCAA with<
+# AJUSTOS: DECIMALS, SEP.MILERS ----
     sets <- list("ccaa" = ccaa,"edat_total"= edat_total,"edat_homes"= edat_homes,"edat_dones"= edat_dones)
+    
+    # eliminar els '.' a tots els data.frames
+    for (i in names(sets)){
+      sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) # Eliminem '.' arreu menys 1a col.
+    }
+    
+    # substituir ',' per '.' a `ccaa`
+    sets[[1]][,2] <- sapply(sets[[1]][,2], function(x) as.numeric(gsub(",",".",x)))
+    
+   # sapply(sets,function(x) data.frame(x, row.names =1))
+    
+      
+    
+# EXPORTAR CSVs --------------------------
     for(i in names(sets)) {
       write_delim(
         sets[[i]], 
