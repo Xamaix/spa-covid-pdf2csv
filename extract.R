@@ -23,22 +23,26 @@ ccaa <- taules[[1]][-c(1:4), ] %>% data.frame(row.names = NULL)
 colnames(ccaa) <- ccaa_cols
 
 # EDAT TOTAL -----------------------------
-# A partir del pdf 57 les taules d'edats passen de `taules[[2]]` a `taules[[3]]`
+# A partir del pdf 57 les taules d'edats passen de `taules[[2]]` a `taules[[3]]` i 
+# rangs total=[3:12] a [7:16] / dones=[19:28] a [24:33] / homes = [40:49]
+# cols (1:4,8) a (1:4,6) / dones|homes c(1,2,3,5,8)  + split de X.3
 edat_cols <- c("edat","confirmats","hospitalitzats","uci", "morts")
-edat_total <- taules[[3]][7:16,c(1:4,8)] %>% 
+edat_total <- taules[[3]][7:16,c(1:4,6)] %>% 
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
   data.frame(row.names = NULL)
 colnames(edat_total) <- edat_cols
 
 # EDAT DONES -----------------------------
-edat_dones <- taules[[3]][40:49,c(1:4,8)] %>% 
+edat_dones <- taules[[3]][24:33,c(1,2,3,5,8)] %>% 
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+  separate(col="X.3", sep = " ", into = "X.3", remove = TRUE) %>%
   data.frame(row.names = NULL)
 colnames(edat_homes) <- edat_cols
 
 # EDAT HOMES -----------------------------
-edat_homes <- taules[[3]][24:33,c(1:4,8)] %>% 
+edat_homes <- taules[[3]][40:49,c(1,2,3,5,8)] %>% 
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+  separate(col="X.3", sep = " ", into = "X.3", remove = TRUE) %>%
   data.frame(row.names = NULL)
 colnames(edat_dones) <- edat_cols
 
