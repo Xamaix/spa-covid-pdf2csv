@@ -37,14 +37,14 @@ edat_dones <- taules[[3]][24:33,c(1,2,3,5,8)] %>%
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
   separate(col="X.3", sep = " ", into = "X.3", remove = TRUE) %>%
   data.frame(row.names = NULL)
-colnames(edat_homes) <- edat_cols
+colnames(edat_dones) <- edat_cols
 
 # EDAT HOMES -----------------------------
 edat_homes <- taules[[3]][40:49,c(1,2,3,5,8)] %>% 
   separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
   separate(col="X.3", sep = " ", into = "X.3", remove = TRUE) %>%
   data.frame(row.names = NULL)
-colnames(edat_dones) <- edat_cols
+colnames(edat_homes) <- edat_cols
 
 # AJUSTOS: DECIMALS, SEP.MILERS ----
 sets <- list("ccaa" = ccaa,"edat_total"= edat_total,"edat_homes"= edat_homes,"edat_dones"= edat_dones)
