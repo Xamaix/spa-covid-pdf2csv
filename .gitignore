@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 .venv
-data55.pdf
+*.pdf
+*.json
