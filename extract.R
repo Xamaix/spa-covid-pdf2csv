@@ -1,15 +1,16 @@
 #install.packages("tabulizer")
-#install.packages("googlesheets4")
-
+Sys.setenv(JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_241.jdk/Contents/Home")
 library(tidyverse)
 library(tabulizer)
-library(googlesheets4)
 library(lubridate)
 
 # CONFIG ---------------------------------
 
     # Càlcul del número d'informe
-    n_informe = 56 + as.numeric(today("GMT") - ymd("2020-03-26"))
+    n_informe = 55 + floor(as.numeric(
+        ymd_hms(paste0(today("GMT")," 17:00:00"))
+        - ymd_hms("2020-03-26 16:00:00")))
+
 
     # Url del número d'informe
     url <- paste0("https://www.mscbs.gob.es/profesionales/saludPublica/ccayes/alertasActual/nCov-China/documentos/Actualizacion_",n_informe,"_COVID-19.pdf")
@@ -49,6 +50,6 @@ library(lubridate)
       write_delim(
         sets[[i]], 
         paste0("./exports/",i,"_",n_informe,".csv"),
-        delim = ";")
+        delim = ",")
       }
 
