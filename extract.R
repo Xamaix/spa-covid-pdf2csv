@@ -25,23 +25,23 @@ library(lubridate)
 # EDAT TOTAL -----------------------------
     # Editats rangs i separate()
     edat_cols <- c("edat","confirmats","hospitalitzats","uci", "morts")
-    edat_total <- taules[[2]][5:14,c(1:3,7)] %>% 
-      separate(col="X.1", sep = " ", into = c("X.1","X.2","X.3"), remove = TRUE) %>%
-      select(-"X.2") %>%
+    edat_total <- taules[[2]][5:14,c(1:4,6)] %>% 
+      separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+      separate(col="X.2", sep = " ", into = "X.2", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_total) <- edat_cols
 
 # EDAT DONES -----------------------------
-    edat_dones <- taules[[2]][23:32,c(1:3,7)] %>% 
-      separate(col="X.1", sep = " ", into = c("X.1","X.2","X.3"), remove = TRUE) %>%
-      select(-"X.2") %>%
+    edat_dones <- taules[[2]][23:32,c(1:4,6)] %>% 
+      separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+      separate(col="X.2", sep = " ", into = "X.2", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_dones) <- edat_cols
 
 # EDAT HOMES -----------------------------
-    edat_homes <- taules[[2]][40:49,c(1:3,7)] %>% 
-      separate(col="X.1", sep = " ", into = c("X.1","X.2","X.3"), remove = TRUE) %>%
-      select(-"X.2") %>%
+    edat_homes <- taules[[2]][40:49,c(1:4,6)] %>% 
+      separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
+      separate(col="X.2", sep = " ", into = "X.2", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_homes) <- edat_cols
 
@@ -49,13 +49,13 @@ library(lubridate)
     sets <- list("ccaa" = ccaa,"edat_total"= edat_total,"edat_homes"= edat_homes,"edat_dones"= edat_dones)
 
 # eliminar els '.' a tots els data.frames
-for (i in names(sets)){
-  sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) %>%
-    as.data.frame(row.names = 1)
-}
+    for (i in names(sets)){
+      sets[[i]] <- sapply(sets[[i]], function(v) {gsub("\\.","", as.character(v))}) %>%
+        as.data.frame(row.names = 1)
+    }
 
 # substituir ',' per '.' a `ccaa`
-sets[[1]][,3] <- sapply(sets[[1]][,3], function(x) gsub(",",".",x)) %>% as.numeric()
+      sets[[1]][,3] <- sapply(sets[[1]][,3], function(x) gsub(",",".",x)) %>% as.numeric()
 
 # EXPORTAR CSVs --------------------------
     for(i in names(sets)) {
