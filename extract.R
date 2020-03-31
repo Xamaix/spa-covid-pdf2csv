@@ -25,23 +25,20 @@ library(lubridate)
 # EDAT TOTAL -----------------------------
     # Editats rangs i separate()
     edat_cols <- c("edat","confirmats","hospitalitzats","uci", "morts")
-    edat_total <- taules[[2]][5:14,c(1:4,6)] %>% 
+    edat_total <- taules[[2]][5:14,c(1:4,8)] %>% 
       separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
-      separate(col="X.2", sep = " ", into = "X.2", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_total) <- edat_cols
 
 # EDAT DONES -----------------------------
-    edat_dones <- taules[[2]][23:32,c(1:4,6)] %>% 
+    edat_dones <- taules[[2]][23:32,c(1:4,8)] %>% 
       separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
-      separate(col="X.2", sep = " ", into = "X.2", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_dones) <- edat_cols
 
 # EDAT HOMES -----------------------------
-    edat_homes <- taules[[2]][40:49,c(1:4,6)] %>% 
+    edat_homes <- taules[[2]][40:49,c(1:4,8)] %>% 
       separate(col="X.1", sep = " ", into = "X.1", remove = TRUE) %>%
-      separate(col="X.2", sep = " ", into = "X.2", remove = TRUE) %>%
       data.frame(row.names = NULL)
     colnames(edat_homes) <- edat_cols
 
