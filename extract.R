@@ -6,7 +6,7 @@ library(lubridate)
 # CONFIG ---------------------------------
 
 # Càlcul del número d'informe
-  n_informe = 55 + floor(as.numeric(
+  n_informe = 63 + floor(as.numeric(
     ymd_hms(paste0(today("GMT")," 16:00:00"),tz="GMT")
     - ymd_hms("2020-03-25 16:00:00", tz="GMT")))
 
